@@ -1,0 +1,13 @@
+{
+  "symbol": "AMD",
+  "type": "C",
+  "strike": 160,
+  "expiry": "2025-08-01",
+  "entry_trigger": 172.50,
+  "limit_price": 3.80,
+  "take_profit_1": 5.00,
+  "take_profit_2": 7.50,
+  "stop_loss": 2.60,
+  "contracts": 1
+}
+
