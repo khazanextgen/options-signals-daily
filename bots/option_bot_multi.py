@@ -6,8 +6,7 @@ import time
 ib = IB()
 ib.connect('127.0.0.1', 7497, clientId=4)
 
-# ✅ GitHub signal folder
-SIGNAL_FOLDER = '/Users/khazashareef/Documents/2025/bot/options-signals-daily/signals'
+SIGNAL_FOLDER = '/Users/khazashareef/Documents/2025/bot/options-signals-daily/signals/'
 active_trades = {}
 
 def load_signals():
@@ -29,7 +28,7 @@ def setup_market_data(signal):
         signal['symbol'],
         signal['expiry'],
         float(signal['strike']),
-        signal['type'][0],  # C or P
+        signal['type'][0],
         'SMART'
     )
     ib.qualifyContracts(stock)
@@ -62,25 +61,25 @@ while True:
 
         print(f"[{s['symbol']}] Stock: {stock_price:.2f}, Option: {option_price:.2f}")
 
-        if not trade["position_open"] and stock_price >= s['entry_trigger'] and option_price <= s['limit_price"]:
-            order = LimitOrder('BUY', s['contracts'], option_price)
-            ib.placeOrder(trade['option'], order)
+        if not trade["position_open"] and stock_price >= s["entry_trigger"] and option_price <= s["limit_price"]:
+            order = LimitOrder('BUY', s["contracts"], option_price)
+            ib.placeOrder(trade["option"], order)
             trade["position_open"] = True
             print(f"🎯 Bought {s['contracts']} {s['symbol']} {s['strike']}C @ {option_price:.2f}")
 
         elif trade["position_open"]:
-            if not trade["sold_tp1"] and option_price >= s['take_profit_1']:
-                ib.placeOrder(trade['option'], LimitOrder('SELL', s['contracts']//2, option_price))
+            if not trade["sold_tp1"] and option_price >= s["take_profit_1"]:
+                ib.placeOrder(trade["option"], LimitOrder('SELL', s["contracts"] // 2, option_price))
                 trade["sold_tp1"] = True
                 print(f"💰 TP1 hit on {s['symbol']} @ {option_price:.2f}")
 
-            elif trade["sold_tp1"] and option_price >= s['take_profit_2']:
-                ib.placeOrder(trade['option'], LimitOrder('SELL', s['contracts'] - (s['contracts']//2), option_price))
+            elif trade["sold_tp1"] and option_price >= s["take_profit_2"]:
+                ib.placeOrder(trade["option"], LimitOrder('SELL', s["contracts"] - (s["contracts"] // 2), option_price))
                 print(f"🚀 TP2 hit on {s['symbol']} @ {option_price:.2f}")
                 del active_trades[fname]
 
-            elif option_price <= s['stop_loss']:
-                ib.placeOrder(trade['option'], LimitOrder('SELL', s['contracts'], option_price))
+            elif option_price <= s["stop_loss"]:
+                ib.placeOrder(trade["option"], LimitOrder('SELL', s["contracts"], option_price))
                 print(f"🛑 SL hit on {s['symbol']} @ {option_price:.2f}")
                 del active_trades[fname]
 
@@ -90,3 +89,4 @@ while True:
 
 ib.disconnect()
 print("📘 Bot stopped.")
+
